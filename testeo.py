@@ -25,35 +25,59 @@ def funcion_comparacion(monedas:list):
                                                 'numberOfTrades',
                                                 'takerBuyBaseVol',
                                                 'takerBuyQuoteVol', 'ignore'])
-        price_df.dateTime = pd.to_datetime(price_df.dateTime, unit='ms')
-        price_df.set_index('dateTime')
-        price_df.closeTime = pd.to_datetime(price_df.closeTime, unit='ms')
         price_df.close = pd.to_numeric(price_df.close)
-        price_df.volume = pd.to_numeric(price_df.volume)
-        price_df.high = pd.to_numeric(price_df.high)
-        price_df.low = pd.to_numeric(price_df.low)
 
         ##-------------------------------------------------------- extraemos lista con precios close-------------------------
         lista_precios = [ element for element in price_df['close']]
 
-        #Dataframes_monedas[str(moneda) + '_df'] = lista_precios
 
-        final1 = calcular_bollinger_bands(precios = lista_precios, dias = 1000, k = 1)
+        while (len(lista_precios) <= 4800):
+            time.sleep(3)
+            candles = client.get_klines(symbol= moneda, interval=Client.KLINE_INTERVAL_1MINUTE, limit = 1)
+            price_df = pd.DataFrame(candles, columns=['dateTime',
+                                                    'open',
+                                                    'high', 'low',
+                                                    'close', 'volume',
+                                                    'closeTime',
+                                                    'quoteAssetVolume',
+                                                    'numberOfTrades',
+                                                    'takerBuyBaseVol',
+                                                    'takerBuyQuoteVol', 'ignore'])
+            price_df.close = pd.to_numeric(price_df.close)
+            lista_precios.append(price_df['close'][0])
+            #Dataframes_monedas[str(moneda) + '_df'] = lista_precios
 
-        dato = 999
-        BS = final1["Banda Superior"][dato] #Banda superior
-        BI = final1["Banda Inferior"][dato] #Banda inferior
-        UP = lista_precios[dato] #Ultimo Precio
 
-        if UP > BS:
-            print(f"Moneda:{moneda} --> Esta por encima de la banda de bollinger")
-        elif UP < BI:
-            print(f"Moneda:{moneda} --> Esta por debajo de la banda de bollinger")
-        else:
-            pass
+            final1 = calcular_bollinger_bands(precios = lista_precios, dias = 1000, k = 1)
+
+            dato = len(lista_precios) - 2
+            print(f"Dato= {dato}")
+            BS = final1["Banda Superior"][dato] #Banda superior
+            print(f"BS= {BS}")
+            BI = final1["Banda Inferior"][dato] #Banda inferior
+            print(f"BI= {BI}")
+            UP = lista_precios[-1] #Ultimo Precio
+            print(f"UP= {UP}")
+
+            """Encima = False
+            Debajo = True
+
+            if UP > BS:
+                Encima=True
+                print(f"Moneda:{moneda} --> Esta por encima de la banda de bollinger")
+            elif UP < BI:
+                Debajo=True
+                print(f"Moneda:{moneda} --> Esta por debajo de la banda de bollinger")
+            else:
+                Encima=False
+                Debajo=False
+                pass
+
+            PosicionAbierta = True
+            if PosicionAbierta and (Encima or Debajo):
+                pass
 
 
-    """
     fig, ax = plt.subplots()
     final1.plot( y=['Banda Superior', 'Banda Inferior', 'Media Móvil'], ax=ax)
     plt.show()
