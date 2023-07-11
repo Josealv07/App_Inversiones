@@ -23,3 +23,11 @@ def calcular_bollinger_bands(precios, dias=20, k=2):
 
 
 
+def estrecho(BS,BI,moneda):
+    parametros = {'BTCUSDT':0.0375, 'XLMUSDT':0.2, 'ETHUSDT':0.2,'EOSUSDT':0.2}
+    margen = (BS/BI)-1
+    if margen <= parametros[moneda]:
+        return True
+    else:
+        return False
+    
