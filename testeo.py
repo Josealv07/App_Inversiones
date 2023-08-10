@@ -108,22 +108,6 @@ def funcion_comparacion(monedas:list):
                 pass
 
 
-    fig, ax = plt.subplots()
-    final1.plot( y=['Banda Superior', 'Banda Inferior', 'Media Móvil'], ax=ax)
-    plt.show()
-
-    fig, ax = plt.subplots()
-    final2.plot( y=['Banda Superior', 'Banda Inferior', 'Media Móvil'], ax=agit pullx)
-    plt.show()
-
-    fig, ax = plt.subplots()
-    final3.plot( y=['Banda Superior', 'Banda Inferior', 'Media Móvil'], ax=ax)
-    plt.show()
-    """
-
-
-
-
 # Tiempo inicial
 tiempo_inicial = time.time()
 
@@ -146,7 +130,7 @@ while True:
    
    
    
-   #    poner ordenes
+#poner ordenes
 
 api_key = 'TU_API_KEY'
 api_secret = 'TU_API_SECRET'
