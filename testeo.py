@@ -45,7 +45,7 @@ def funcion_comparacion(monedas:list):
                                                     'takerBuyQuoteVol', 'ignore'])
             price_df.close = pd.to_numeric(price_df.close)
             lista_precios.append(price_df['close'][0])
-            print(len(lista_precios))
+            #print(len(lista_precios))
             #Dataframes_monedas[str(moneda) + '_df'] = lista_precios
 
 
@@ -59,9 +59,9 @@ def funcion_comparacion(monedas:list):
             print(f"BI= {BI}")
             UP = lista_precios[-1] #Ultimo Precio
             print(f"UP= {UP}")
+    
 
         while(True):
-            time.sleep(3)
             lista_precios.pop(0)
             candles = client.get_klines(symbol= moneda, interval=Client.KLINE_INTERVAL_1MINUTE, limit = 1)
             price_df = pd.DataFrame(candles, columns=['dateTime',
@@ -75,7 +75,7 @@ def funcion_comparacion(monedas:list):
                                                     'takerBuyQuoteVol', 'ignore'])
             price_df.close = pd.to_numeric(price_df.close)
             lista_precios.append(price_df['close'][0])
-            print(len(lista_precios))
+
             #Dataframes_monedas[str(moneda) + '_df'] = lista_precios
 
 
